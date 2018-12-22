@@ -20,7 +20,7 @@
 #include "CryptoNoteProtocol/CryptoNoteProtocolHandler.h"
 #include "P2p/NetNode.h"
 #include "P2p/NetNodeConfig.h"
-#include "Rpc/RpcServer.cpp"
+#include "Rpc/RpcServer.h"
 #include "Rpc/RpcServerConfig.h"
 #include "version.h"
 

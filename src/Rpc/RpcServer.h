@@ -36,7 +36,53 @@ private:
   static std::unordered_map<std::string, RpcHandler<HandlerFunction>> s_handlers;
 
   virtual void processRequest(const HttpRequest& request, HttpResponse& response) override;
-  bool processJsonRpcRequest(const HttpRequest& request, HttpResponse& response);
+  //bool processJsonRpcRequest(const HttpRequest& request, HttpResponse& response);
+  bool RpcServer::processJsonRpcRequest(const HttpRequest& request, HttpResponse& response) {
+
+  using namespace JsonRpc;
+  response.addHeader("Access-Control-Allow-Origin", "*");
+  response.addHeader("Content-Type", "application/json");
+
+  JsonRpcRequest jsonRequest;
+  JsonRpcResponse jsonResponse;
+
+  try {
+    logger(TRACE) << "JSON-RPC request: " << request.getBody();
+    jsonRequest.parseRequest(request.getBody());
+    jsonResponse.setId(jsonRequest.getId()); // copy id
+
+    static std::unordered_map<std::string, RpcServer::RpcHandler<JsonMemberMethod>> jsonRpcHandlers = {
+      { "getblockcount", { makeMemberMethod(&RpcServer::on_getblockcount), true } },
+      { "on_getblockhash", { makeMemberMethod(&RpcServer::on_getblockhash), false } },
+      { "getblocktemplate", { makeMemberMethod(&RpcServer::on_getblocktemplate), false } },
+      { "getcurrencyid", { makeMemberMethod(&RpcServer::on_get_currency_id), true } },
+      { "submitblock", { makeMemberMethod(&RpcServer::on_submitblock), false } },
+      { "getlastblockheader", { makeMemberMethod(&RpcServer::on_get_last_block_header), false } },
+      { "getblockheaderbyhash", { makeMemberMethod(&RpcServer::on_get_block_header_by_hash), false } },
+      { "getblockheaderbyheight", { makeMemberMethod(&RpcServer::on_get_block_header_by_height), false } }
+    };
+
+    auto it = jsonRpcHandlers.find(jsonRequest.getMethod());
+    if (it == jsonRpcHandlers.end()) {
+      throw JsonRpcError(JsonRpc::errMethodNotFound);
+    }
+
+    if (!it->second.allowBusyCore && !isCoreReady()) {
+      throw JsonRpcError(CORE_RPC_ERROR_CODE_CORE_BUSY, "Core is busy");
+    }
+
+    it->second.handler(this, jsonRequest, jsonResponse);
+
+  } catch (const JsonRpcError& err) {
+    jsonResponse.setError(err);
+  } catch (const std::exception& e) {
+    jsonResponse.setError(JsonRpcError(JsonRpc::errInternalError, e.what()));
+  }
+
+  response.setBody(jsonResponse.getBody());
+  logger(TRACE) << "JSON-RPC response: " << jsonResponse.getBody();
+  return true;
+}
   bool isCoreReady();
 
   // binary handlers
