@@ -19,7 +19,6 @@ class ICryptoNoteProtocolQuery;
 class RpcServer : public HttpServer {
 public:
   RpcServer(System::Dispatcher& dispatcher, Logging::ILogger& log, core& c, NodeServer& p2p, const ICryptoNoteProtocolQuery& protocolQuery);
-  HttpResponse.addHeader("Access-Control-Allow-Origin", "*");
   typedef std::function<bool(RpcServer*, const HttpRequest& request, HttpResponse& response)> HandlerFunction;
   bool enableCors(const std::vector<std::string>  domains);
   std::vector<std::string> getCorsDomains();
