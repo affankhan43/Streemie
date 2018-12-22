@@ -37,7 +37,7 @@ private:
 
   virtual void processRequest(const HttpRequest& request, HttpResponse& response) override;
   //bool processJsonRpcRequest(const HttpRequest& request, HttpResponse& response);
-  bool RpcServer::processJsonRpcRequest(const HttpRequest& request, HttpResponse& response) {
+  bool processJsonRpcRequest(const HttpRequest& request, HttpResponse& response) {
 
   using namespace JsonRpc;
   response.addHeader("Access-Control-Allow-Origin", "*");
