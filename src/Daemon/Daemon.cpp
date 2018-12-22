@@ -267,7 +267,6 @@ int main(int argc, char* argv[])
     }
 
     logger(INFO) << "Starting core rpc server on address " << rpcConfig.getBindAddress();
-    rpcServer.addH("*");
     rpcServer.start(rpcConfig.bindIp, rpcConfig.bindPort);
     logger(INFO) << "Core rpc server started ok";
 
