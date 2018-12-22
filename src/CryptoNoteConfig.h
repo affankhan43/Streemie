@@ -12,7 +12,7 @@ namespace parameters {
 
 const uint64_t CRYPTONOTE_MAX_BLOCK_NUMBER                   = 500000000;
 const size_t   CRYPTONOTE_MAX_BLOCK_BLOB_SIZE                = 500000000;
-const size_t   CRYPTONOTE_MAX_TX_SIZE                        = 1000000000;
+const size_t   CRYPTONOTE_MAX_TX_SIZE                        = 2400000000;
 //TODO Currency-specific address prefix
 const uint64_t CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX       = 0x23679a; //2320282
 //TODO Choose maturity period for your currency
@@ -106,8 +106,8 @@ const char     P2P_STAT_TRUSTED_PUB_KEY[]                    = "8f80f9a5a434a9f1
 
 //TODO Add here your network seed nodes
 const std::initializer_list<const char*> SEED_NODES = {
-  "18.217.113.172:9343",
-  "18.217.62.173:9343"
+  "18.217.113.172:9552",
+  "18.217.62.173:9552"
 };
 
 struct CheckpointData {
