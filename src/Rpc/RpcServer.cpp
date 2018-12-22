@@ -117,9 +117,8 @@ void RpcServer::processRequest(const HttpRequest& request, HttpResponse& respons
 bool RpcServer::processJsonRpcRequest(const HttpRequest& request, HttpResponse& response) {
 
   using namespace JsonRpc;
-
-  response.addHeader("Content-Type", "application/json");
   response.addHeader("Access-Control-Allow-Origin", "*");
+  response.addHeader("Content-Type", "application/json");
 
   JsonRpcRequest jsonRequest;
   JsonRpcResponse jsonResponse;
