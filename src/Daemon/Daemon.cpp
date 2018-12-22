@@ -20,7 +20,7 @@
 #include "CryptoNoteProtocol/CryptoNoteProtocolHandler.h"
 #include "P2p/NetNode.h"
 #include "P2p/NetNodeConfig.h"
-#include "Rpc/RpcServer.h"
+#include "Rpc/RpcServer.cpp"
 #include "Rpc/RpcServerConfig.h"
 #include "version.h"
 
@@ -267,7 +267,7 @@ int main(int argc, char* argv[])
     }
 
     logger(INFO) << "Starting core rpc server on address " << rpcConfig.getBindAddress();
-    rpcServer.enableCors("*");
+    rpcServer.addH("*");
     rpcServer.start(rpcConfig.bindIp, rpcConfig.bindPort);
     logger(INFO) << "Core rpc server started ok";
 
