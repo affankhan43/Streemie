@@ -19,7 +19,7 @@ class ICryptoNoteProtocolQuery;
 class RpcServer : public HttpServer {
 public:
   RpcServer(System::Dispatcher& dispatcher, Logging::ILogger& log, core& c, NodeServer& p2p, const ICryptoNoteProtocolQuery& protocolQuery);
-
+  HttpResponse.addHeader("Access-Control-Allow-Origin", "*");
   typedef std::function<bool(RpcServer*, const HttpRequest& request, HttpResponse& response)> HandlerFunction;
   bool enableCors(const std::vector<std::string>  domains);
   std::vector<std::string> getCorsDomains();
@@ -36,12 +36,7 @@ private:
   static std::unordered_map<std::string, RpcHandler<HandlerFunction>> s_handlers;
 
   virtual void processRequest(const HttpRequest& request, HttpResponse& response) override;
-  //bool processJsonRpcRequest(const HttpRequest& request, HttpResponse& response);
-  bool processJsonRpcRequest(const HttpRequest& request, HttpResponse& response) {
-  response.addHeader("Access-Control-Allow-Origin", "*");
-  response.addHeader("Content-Type", "application/json");
-  return true;
-}
+  bool processJsonRpcRequest(const HttpRequest& request, HttpResponse& response);
   bool isCoreReady();
 
   // binary handlers
