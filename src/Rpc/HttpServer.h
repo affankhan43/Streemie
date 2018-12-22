@@ -28,8 +28,9 @@ public:
   void start(const std::string& address, uint16_t port);
   void stop();
 
-  virtual void processRequest(const HttpRequest& request, HttpResponse& response) = 0;
-  response.addHeader("Access-Control-Allow-Origin", "*");
+  virtual void processRequest(const HttpRequest& request, HttpResponse& response) {
+    response.addHeader("Access-Control-Allow-Origin", "*");
+  };
 protected:
 
   System::Dispatcher& m_dispatcher;
